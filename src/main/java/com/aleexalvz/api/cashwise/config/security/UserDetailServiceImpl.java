@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserDetailServiceImpl implements UserDetailsService {
-
+    private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
     final UserRepository userRepository;
 
     public UserDetailServiceImpl(UserRepository userRepository) {
@@ -18,8 +18,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email))
+                );
     }
 }

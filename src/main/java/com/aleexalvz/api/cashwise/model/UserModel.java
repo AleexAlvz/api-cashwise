@@ -6,7 +6,9 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -15,6 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class UserModel implements UserDetails, Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -24,6 +27,10 @@ public class UserModel implements UserDetails, Serializable {
     private String username;
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+    @Column(name = "EMAIL", nullable = false, unique = true)
+    private String email;
+    @Column(name = "REGISTRATION_DATE", nullable = false)
+    private LocalDateTime registrationDate;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
